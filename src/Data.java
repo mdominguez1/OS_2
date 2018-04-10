@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 /**
  * @Author - Melchor Dominguez, Terence Holmes
  * @Version - 4.16.2018
@@ -15,8 +16,12 @@ public class Data{
     
     /** Matrix to hold the probabilities of direction of the finite state machine*/
     private float[][] matrix;
-
+    
+    /** Matrix transformed to number line probabilities */
     private float[][] line;
+    
+    /** Array to hold how many iterations a state landed in*/
+    private int[] results;
 
     /**
      * Gets data required to make the finite state machines.
@@ -24,6 +29,7 @@ public class Data{
      */
     public Data(File file){
         parseData(file);
+        Arrays.fill(results, 0);
     }//end constructor
     
     /**
@@ -47,6 +53,7 @@ public class Data{
                     int size = Integer.parseInt(splitLine[0]);
                     matrix = new float[size][size];
                     this.line = new float[size][size];
+                    this.results = new int[size];
                 }else{  
                     int column = 0;
                     int row = numLine - 1;
@@ -102,6 +109,8 @@ public class Data{
                 break;
             }//end if
         }//end for
+
+        return newState;
     }//end getState()   
     
     /**
@@ -121,5 +130,24 @@ public class Data{
         }//end for
 
     }//end getState()
+    
+    /**
+     * Method to push a new iteration of a current state
+     * @param state - new state to be recorded
+     */
+    protected void pushState(int state){
+        results[state]++;
+    }//end pushState()
+    
+    /**
+     * Print the results
+     */
+    protected void printResults(){
 
+        for(int i = 0; i < results.length; i++){
+            System.out.println("State " + Integer.toString(i) + ": " 
+                                + Integer.toString(results[i]));
+        }//end for
+
+    }//end printResults()
 }//end Data class

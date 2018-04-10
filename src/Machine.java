@@ -1,5 +1,6 @@
 import java.util.Scanner; 
 import java.io.File;
+
 /**
  * @Author - Melchor Dominguez
  * Machine Class that will make a finite state machine
@@ -37,6 +38,10 @@ public class Machine{
         // Initialize Data for the finite state machines to use
         Data data = new Data(file);
         data.printMatrix();
+
+        Runnable threadOne = new Markov(0, 100, data);
+        Thread thread1 = new Thread(threadOne);
+        thread1.start();
         
     }//end machine
 }//end Machine class

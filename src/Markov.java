@@ -20,8 +20,6 @@ public class Markov implements Runnable{
      */
     private Data data;
 
-    private ThreadLocalRandom rand;
-
     /**
      * Starts the finite state machine
      * @param startState - the Start state for the finite state machine
@@ -29,19 +27,18 @@ public class Markov implements Runnable{
      * @param stuff - The data that contains a unique ID, the result of the execution, and
      *                the representation of the finite state machine
      */
-    private Markov(int startState, int iterations, Data stuff){
+    protected Markov(int startState, int iterations, Data stuff){
         start = startState;
         this.iterations = iterations;
         data = stuff;
-        rand = new ThreadLocalRandom()    
     }//end constructor
     
     /**
      * Run method which will start a thread
      */
-    protected Data run(){
-        
-    }
+    public void run(){
+        getEnd();
+    }//end run()
     
     /**
      * Method to go through the finite state machine and store the 
@@ -50,11 +47,14 @@ public class Markov implements Runnable{
     private void getEnd(){
         int curState = start;
         float prob;
-
-        for(int curIt = 0; curInt < iterations; curIt++){
-            prob = rand.Float();
+        data.pushState(curState);
+        for(int curIt = 0; curIt < iterations; curIt++){
+            prob = ThreadLocalRandom.current().nextFloat();
+            curState = data.getState();
+            data.pushState(curState);
         }//end for
-
+        
+        data.printResults();
     }//end getEnd()
 
 }//end Markov class
