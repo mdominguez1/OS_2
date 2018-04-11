@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class Data{
     
     /** int to hold a unique ID for the Data class*/
-    private static final int uniqueID = 1300135;
+    private int uniqueID = 130013;
     
     /** Matrix to hold the probabilities of direction of the finite state machine*/
     private float[][] matrix;
@@ -83,6 +83,22 @@ public class Data{
     }//end parseData
     
     /**
+     * Returns the size of the matrix
+     * @return - size of matrix
+     */
+    protected int getSize(){
+        return matrix.length;
+    }//end getSize()
+    
+    /**
+     * Returns the number line to use for finite state machine
+     * @return - number line for data inserted
+     */
+    protected float[][] getLine(){
+        return line;
+    }//end getMatrix
+
+    /**
      * Method to print the matrix
      */
     protected void printMatrix(){
@@ -94,24 +110,6 @@ public class Data{
             System.out.println("");
         }//end for
     }//end printMatrix()
-    
-    /**
-     * Returns the end state after an iterations and counts it
-     * @param curState - the current state which the finite state machine is in
-     * @param rNum - random number to use 
-     * @return - the int representing the end state
-     */
-    protected int getState(int curState, float rNum){
-        int newState = 0;
-        for(int i = 0; i < line.length; i++){
-            if(rNum < line[i][curState]){
-                newState = i;
-                break;
-            }//end if
-        }//end for
-
-        return newState;
-    }//end getState()   
     
     /**
      * Method which will make a number line to determine the probability
@@ -129,25 +127,20 @@ public class Data{
             }//end for
         }//end for
 
-    }//end getState()
+    }//end makeLine()
     
     /**
-     * Method to push a new iteration of a current state
-     * @param state - new state to be recorded
+     * change the unique ID for the 
      */
-    protected void pushState(int state){
-        results[state]++;
-    }//end pushState()
+    protected void setID(){
+        uniqueID++;   
+    }//end setID()
     
     /**
-     * Print the results
+     * get the unique ID 
      */
-    protected void printResults(){
+    protected int getID(){
+        return uniqueID;
+    }//end getID()
 
-        for(int i = 0; i < results.length; i++){
-            System.out.println("State " + Integer.toString(i) + ": " 
-                                + Integer.toString(results[i]));
-        }//end for
-
-    }//end printResults()
 }//end Data class

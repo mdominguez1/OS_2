@@ -1,5 +1,6 @@
 import java.util.Scanner; 
 import java.io.File;
+import java.util.concurrent.Callable;
 
 /**
  * @Author - Melchor Dominguez
@@ -39,7 +40,7 @@ public class Machine{
         Data data = new Data(file);
         data.printMatrix();
 
-        Runnable threadOne = new Markov(0, 100, data);
+        Callable threadOne = new Markov(0, 100, data);
         Thread thread1 = new Thread(threadOne);
         thread1.start();
         
