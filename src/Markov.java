@@ -47,10 +47,10 @@ public class Markov implements Runnable{
     private void getEnd(){
         int curState = start;
         float prob;
-        data.pushState(curState);
+        //data.pushState(curState);
         for(int curIt = 0; curIt < iterations; curIt++){
             prob = ThreadLocalRandom.current().nextFloat();
-            curState = data.getState();
+            curState = data.getState(curState, prob);
             data.pushState(curState);
         }//end for
         
