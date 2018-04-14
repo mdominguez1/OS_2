@@ -1,6 +1,7 @@
 import java.util.Scanner; 
 import java.io.File;
 import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  * @Author - Melchor Dominguez
@@ -39,10 +40,19 @@ public class Machine{
         // Initialize Data for the finite state machines to use
         Data data = new Data(file);
         data.printMatrix();
-
-        Callable threadOne = new Markov(0, 100, data);
-        Thread thread1 = new Thread(threadOne);
-        thread1.start();
         
+        final ExecutorService pool = Executors.newFixedThreadPool(threads);
+        List<Future<int[]>> threadReturns = new ArrayList<>();
+        
+        //Start all the threads 
+        for(int i = 0; i < threads; i++){
+            final Future<int[]>> threadReturn =
+                                     pool.submit(new Markov(startState, iterations, stuff));    
+            threadReturns.add(threadReturn);            
+        }//end for
+        
+        //check if enough finite state machines have been returned
+        if(threadReturns.size() >= fsm)
+            pool.shutdown()
     }//end machine
 }//end Machine class

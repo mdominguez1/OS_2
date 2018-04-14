@@ -1,5 +1,6 @@
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.Callable;
+import java.util.Arrays;
 /**
  * @Author - Melchor Dominguez
  * @Version - 4.16.2018
@@ -38,9 +39,9 @@ public class Markov implements Callable<int[]>{
      * Run method which will start a thread
      */
     public int[] call(){
-        int[] results = new int[data.getSize];
+        int[] results = new int[data.getSize()];
 
-        results = Arrays.fill(results, 0);
+        Arrays.fill(results, 0);
 
         while(true){
             /** 
@@ -52,8 +53,8 @@ public class Markov implements Callable<int[]>{
             }//end if
             int[] singleResults = getEnd();
 
-            for(i = 0; i < results.length; i++){
-                results = results[i] + singleResults[i];    
+            for(int i = 0; i < results.length; i++){
+                results[i] = results[i] + singleResults[i];    
             }
         }//end while
         
@@ -72,7 +73,7 @@ public class Markov implements Callable<int[]>{
         /** float probability to determine the random number for getting the next state*/
         float prob;
         /** int array to hold how many times a state was accessed*/
-        int[] result = new int[data.getSize];
+        int[] result = new int[data.getSize()];
         //Fill the result with zero to begin with
         Arrays.fill(result, 0);
 
@@ -87,11 +88,12 @@ public class Markov implements Callable<int[]>{
 
         //Testing Purpose:
         //Print the result for a single 
-        for(int i = 0; i < results.length; i++){
+        for(int i = 0; i < result.length; i++){
             System.out.println("State " + Integer.toString(i) + ": " +
-                                Integer.toString(results[i]));
+                                Integer.toString(result[i]));
         }//end for
-
+        
+        return result;
     }//end getEnd()
     
     /**
