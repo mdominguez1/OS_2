@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 /**
  * @Author - Melchor Dominguez, Terence Holmes
  * @Version - 4.16.2018
@@ -12,7 +13,10 @@ import java.util.Arrays;
 public class Data{
     
     /** int to hold a unique ID for the Data class*/
-    private int uniqueID = 130013;
+    private int uniqueID;
+
+    /** The max number for a unique ID for the Data class*/
+    private final int IDMAX = 1000;
     
     /** Matrix to hold the probabilities of direction of the finite state machine*/
     private float[][] matrix;
@@ -132,6 +136,7 @@ public class Data{
         //Figure out the numLine to use
         for(int c = 0; c < matrix.length; c++){
             for(int r = 0; r < matrix.length; r++){
+
                 if(r > 0)
                     line[r][c] = line[r-1][c] + matrix[r][c];
                 else
@@ -145,7 +150,7 @@ public class Data{
      * change the unique ID for the 
      */
     protected void setID(){
-        uniqueID++;   
+        uniqueID = ThreadLocalRandom.current().nextInt(IDMAX);
     }//end setID()
     
     /**
@@ -169,12 +174,12 @@ public class Data{
         for(int curIt = 0; curIt < iterations; curIt++){
             prob = ThreadLocalRandom.current().nextFloat();
             curState = getState(curState, prob);
-            result[curState]++;
+            results[curState]++;
         }//end for
 
-        for(int i = 0; i < result.length; i++){
+        for(int i = 0; i < results.length; i++){
             System.out.println("State " + Integer.toString(i) + ": " + 
-                                Integer.toString(result[i]));
+                                Integer.toString(results[i]));
         }//end for
 
     }//end getEnd()
@@ -189,9 +194,10 @@ public class Data{
         for(int i = 0; i < line.length; i++){
             if(rNum < line[i][curState]){
                 int newState  = i;
-                return 
-            }
-        }
-    }
+                return newState; 
+            }//end if
+        }//end for
+        return -1;
+    }//end getState()
 
 }//end Data class

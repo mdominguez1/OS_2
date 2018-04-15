@@ -2,6 +2,12 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.ArrayList;
 
 /**
  * @Author - Melchor Dominguez, Terence Hector
@@ -42,17 +48,25 @@ public class Machine{
         data.printMatrix();
         
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        List<Future<Data> threadReturns = new ArrayList<>();
+        List<Future<Data>> threadReturns = new ArrayList<>();
         
+        int startState;
+        if(args.length < 2){
+            Random ran = new Random();
+            startState = ran.nextInt(data.getSize() - 1);
+        }else{
+            startState = Integer.parseInt(args[1]);
+        }
+
         //Start all the threads 
         for(int i = 0; i < threads; i++){
             final Future<Data> threadReturn =
-                                     pool.submit(new Markov(startState, iterations, stuff));    
+                                     pool.submit(new Markov(startState, iterations, data));    
             threadReturns.add(threadReturn);            
         }//end for
         
         //check if enough finite state machines have been returned
         if(threadReturns.size() >= fsm)
-            pool.shutdown()
+            pool.shutdown();
     }//end machine
 }//end Machine class
