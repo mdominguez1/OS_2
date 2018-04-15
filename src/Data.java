@@ -41,23 +41,34 @@ public class Data{
      */
     protected boolean parseData(File file){
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            
+            /** String to read a line from the files*/
             String line;
+            /** Integer to track what line number of the file there is*/
             int numLine = 0;
             
+            //Read through the lines in the file
             while((line = br.readLine()) != null){
-                
+                /** String array to split the lines by spaces*/
                 String[] splitLine = line.split(" ");
-
+                
+                //Check if the line is the first line of the file
                 if(numLine == 0){
+                    /** Track how many elements are in the line*/
                     int size = Integer.parseInt(splitLine[0]);
+                    //Initialize the matrix to be the size specified
                     matrix = new float[size][size];
+                    //Initialize the size of the number line
                     this.line = new float[size][size];
+                    //Initialize the size of the result array
                     this.results = new int[size];
                 }else{  
+                    /** Integer to track the column number present*/
                     int column = 0;
+                    /** Integer to track the row number*/
                     int row = numLine - 1;
+                    // interate through the line to add element to the matrix
                     while(column < matrix.length){
+                        //Add element from the line to the matrix
                         float elem = Float.parseFloat(splitLine[column]);
                         matrix[row][column] = elem;
                         column++;
@@ -78,6 +89,7 @@ public class Data{
             System.err.println("IOException: " + e.getMessage());
             return false;
         }//end try-catch
+        //Call to make the number line 
         makeLine();
         return true;
     }//end parseData
@@ -142,5 +154,44 @@ public class Data{
     protected int getID(){
         return uniqueID;
     }//end getID()
+    
+    /** 
+     * Method to go through the finite state machine and 
+     * store the result in the data.
+     * @param startState - int that shows the beginning state of the finite 
+     *                      state machine
+     * @param iterations - the number of times the finite state machine will 
+     *                      go to a new state
+     */
+    protected void getEnd(int startState, int iterations){
+        int curState = startState;
+        float prob;
+        for(int curIt = 0; curIt < iterations; curIt++){
+            prob = ThreadLocalRandom.current().nextFloat();
+            curState = getState(curState, prob);
+            result[curState]++;
+        }//end for
+
+        for(int i = 0; i < result.length; i++){
+            System.out.println("State " + Integer.toString(i) + ": " + 
+                                Integer.toString(result[i]));
+        }//end for
+
+    }//end getEnd()
+    
+    /**
+     * Returns the next State depending on the probability of the finite state machine
+     * @param curState - the current state which the finite state machien is in
+     * @param rNum - random number to use 
+     * @return - the int representing the end state 
+     */
+    private int getState(int curState, float rNum){
+        for(int i = 0; i < line.length; i++){
+            if(rNum < line[i][curState]){
+                int newState  = i;
+                return 
+            }
+        }
+    }
 
 }//end Data class

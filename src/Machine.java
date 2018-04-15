@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 /**
- * @Author - Melchor Dominguez
+ * @Author - Melchor Dominguez, Terence Hector
  * Machine Class that will make a finite state machine
  */
 public class Machine{ 
@@ -42,11 +42,11 @@ public class Machine{
         data.printMatrix();
         
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        List<Future<int[]>> threadReturns = new ArrayList<>();
+        List<Future<Data> threadReturns = new ArrayList<>();
         
         //Start all the threads 
         for(int i = 0; i < threads; i++){
-            final Future<int[]>> threadReturn =
+            final Future<Data> threadReturn =
                                      pool.submit(new Markov(startState, iterations, stuff));    
             threadReturns.add(threadReturn);            
         }//end for

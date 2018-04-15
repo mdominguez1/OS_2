@@ -38,7 +38,7 @@ public class Markov implements Callable<int[]>{
     /**
      * Run method which will start a thread
      */
-    public int[] call(){
+    public Data call(){
         int[] results = new int[data.getSize()];
 
         Arrays.fill(results, 0);
@@ -51,14 +51,13 @@ public class Markov implements Callable<int[]>{
                 System.out.println("I'm interrupted!");
                 break;
             }//end if
-            int[] singleResults = getEnd();
+            data.getEnd(start, iterations);
 
             for(int i = 0; i < results.length; i++){
                 results[i] = results[i] + singleResults[i];    
             }
+            return data;
         }//end while
-        
-        return results;
 
     }//end run()
     
