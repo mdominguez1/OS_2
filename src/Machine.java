@@ -49,11 +49,8 @@ public class Machine{
         
         // Initialize Data for the finite state machines to use
         Data data = new Data(file);
-        //data.printMatrix();
 
-        //Create a queue with capacity 1. Threads wanting to add an item are blocked 
-        //until the current item is consumed.
-        //BlockingQueue<Data> queue = new ArrayBlockingQueue<Data>(1);
+        
         /** Threadpool to have all the threads*/
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
         /** */
