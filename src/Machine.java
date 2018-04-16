@@ -22,6 +22,8 @@ public class Machine{
 
     /**
      * Main function that takes in specifications for finite state machine.
+     * @throws InputMismatchException - If input is not an integer.
+     * @throws NumberFormatException - If input is not an integer.
      */
     public static void main(String[] args){
 
@@ -113,6 +115,8 @@ public class Machine{
         * @param data - Data for finite state machines.
         * @param fsm - Number of finite state machines.
         * @param complete - Complete Service that executes threads from pool.
+        * @throws ExecutionException - If there is an error while running.
+        * @throws InterruptedException - If thread is interrupted.
         */
         private static void finalize(Data data, int fsm, ExecutorCompletionService<Data> complete){
             float[] finalResults = new float[data.getSize()];
