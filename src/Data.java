@@ -65,7 +65,12 @@ public class Data{
                     this.line = new float[size][size];
                     //Initialize the size of the result array
                     this.results = new int[size];
-                }else{  
+                }else{
+                    if(splitLine.length != matrix.length){
+                        System.out.println("Matrix size is not the same" +
+                        " as given size");
+                        System.exit(1);
+                    }  
                     /** Integer to track the column number present*/
                     int column = 0;
                     /** Integer to track the row number*/

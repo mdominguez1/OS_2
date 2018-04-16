@@ -3,7 +3,7 @@ import java.util.concurrent.Callable;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 /**
- * @Author - Melchor Dominguez
+ * @Author - Melchor Dominguez, Terence Holmes
  * @Version - 4.16.2018
  * Markov class create the finite state machine
  *

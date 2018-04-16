@@ -13,8 +13,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.InputMismatchException;
 /**
- * @Author - Melchor Dominguez, Terence Hector
+ * @Author - Melchor Dominguez, Terence Holmes
  * Machine Class that will make a finite state machine
  */
 public class Machine{ 
@@ -24,29 +25,50 @@ public class Machine{
      */
     public static void main(String[] args){
 
+        int fsm = 0;
+
+        int iterations = 0;
+
+        int threads = 0;
+
+        String filename = "";
+
+        File file = null;
+
         /** Scanner to get input from keyboard*/
         Scanner sc = new Scanner(System.in);
-        
+        try{
         //Prompt user for how many machines to create
         System.out.print("How many Finite State Machines to create? > ");
         /** int that holds number of finite state machines */
-        int fsm = sc.nextInt();
+        fsm = sc.nextInt();
         
         //Prompt user for how many iterations to perform
         System.out.print("How many iterations for each machine? > ");
         /** int that holds number of iterations*/
-        int iterations = sc.nextInt();
+        iterations = sc.nextInt();
         
         //Prompt user for how many threads to create
         System.out.print("How many threads? > ");
         /** int that holds number of threads*/
-        int threads = sc.nextInt();
-
+        threads = sc.nextInt();
+        }
+        catch(InputMismatchException ime){
+            System.out.println("Please ensure that input is an integer!");
+            System.exit(1);
+        }
+        catch(NumberFormatException nfe){
+            System.out.println("Please ensure that input is an integer!");
+            System.exit(1);
+        }
         System.out.print("Please enter input fileName > ");
         /** String that holds file name */
-        String filename = sc.next();
-        File file = new File(filename);
-        
+        filename = sc.next();
+        file = new File(filename);
+        if(!file.exists() || file.isDirectory()){
+            System.out.println("File doesn't exist or is a directory!");
+            System.exit(1);
+        }
         // Initialize Data for the finite state machines to use
         Data data = new Data(file);
 
