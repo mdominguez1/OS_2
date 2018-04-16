@@ -122,7 +122,6 @@ public class Machine{
             try{
                 final Future<Data> future = complete.take();
                 final Data curData = future.get();
-                curData.printOutput();
                 //System.out.println(count);
                 int[] result = curData.getResults();
                 for(int j = 0; j < result.length; j++){

@@ -29,11 +29,6 @@ public class Data{
     /** Array to hold how many iterations a state landed in*/
     private int[] results;
 
-    private String input = "input.txt";
-    private String output = "output.txt";
-    private PrintWriter inputWriter;
-    private PrintWriter outputWriter;
-
     /**
      * Gets data required to make the finite state machines.
      * @param - file where the data would come from.
@@ -42,9 +37,6 @@ public class Data{
         parseData(file);
         Arrays.fill(results, 0);
         setID();
-        try{
-            inpu
-        }catch(
     }//end constructor
     
     /**
@@ -204,7 +196,6 @@ public class Data{
             if(curIt == iterations - 1)
                 results[curState]++;
         }//end for
-        printInput();
     }//end getEnd()
     
     /**
