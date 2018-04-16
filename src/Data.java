@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 /**
@@ -27,6 +29,11 @@ public class Data{
     /** Array to hold how many iterations a state landed in*/
     private int[] results;
 
+    private String input = "input.txt";
+    private String output = "output.txt";
+    private PrintWriter inputWriter;
+    private PrintWriter outputWriter;
+
     /**
      * Gets data required to make the finite state machines.
      * @param - file where the data would come from.
@@ -34,6 +41,10 @@ public class Data{
     public Data(File file){
         parseData(file);
         Arrays.fill(results, 0);
+        setID();
+        try{
+            inpu
+        }catch(
     }//end constructor
     
     /**
@@ -45,6 +56,7 @@ public class Data{
      */
     protected boolean parseData(File file){
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            
             /** String to read a line from the files*/
             String line;
             /** Integer to track what line number of the file there is*/
@@ -70,7 +82,7 @@ public class Data{
                         System.out.println("Matrix size is not the same" +
                         " as given size");
                         System.exit(1);
-                    }  
+                    }//end if  
                     /** Integer to track the column number present*/
                     int column = 0;
                     /** Integer to track the row number*/
@@ -184,14 +196,10 @@ public class Data{
         for(int curIt = 0; curIt < iterations; curIt++){
             prob = ThreadLocalRandom.current().nextFloat();
             curState = getState(curState, prob);
-            results[curState]++;
+            if(curIt == iterations - 1)
+                results[curState]++;
         }//end for
-
-        for(int i = 0; i < results.length; i++){
-            System.out.println("State " + Integer.toString(i) + ": " + 
-                                Integer.toString(results[i]));
-        }//end for
-
+        printInput();
     }//end getEnd()
     
     /**

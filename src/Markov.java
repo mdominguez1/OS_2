@@ -47,11 +47,9 @@ public class Markov implements Callable<Data>{
                 System.out.println("I'm interrupted!");
                 break;
             }//end if
-            synchronized(data){
-                data.getEnd(start, iterations);
-                System.out.println("Return");
-                return data;
-            }//end synchronize
+            
+            data.getEnd(start, iterations);
+            return data;
         }//end while
         return null;
     }//end run()

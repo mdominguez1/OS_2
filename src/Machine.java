@@ -105,6 +105,7 @@ public class Machine{
             try{
                 final Future<Data> future = complete.take();
                 final Data curData = future.get();
+                curData.printOutput();
                 //System.out.println(count);
                 int[] result = curData.getResults();
                 for(int j = 0; j < result.length; j++){
@@ -116,11 +117,11 @@ public class Machine{
                 System.out.println("Error during thread");
             }catch(InterruptedException e){
                 System.out.println("Interrupted thread");
-            }//end try-catch
+            }
         }//end for
         
         for(int i = 0; i < finalResults.length; i++){
-            System.out.println("-State " + i + ": " + finalResults[i]/total);
+            System.out.println("State " + i + ": " + finalResults[i]/total + "%");
         }//for 
 
     }//end machine
