@@ -8,7 +8,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 /**
  * @Author - Melchor Dominguez, Terence Hector
  * Machine Class that will make a finite state machine
@@ -45,11 +49,16 @@ public class Machine{
         
         // Initialize Data for the finite state machines to use
         Data data = new Data(file);
-        data.printMatrix();
-        
+        //data.printMatrix();
+
+        //Create a queue with capacity 1. Threads wanting to add an item are blocked 
+        //until the current item is consumed.
+        BlockingQueue<Data> queue = new ArrayBlockingQueue<Data>(1);
+        /** Threadpool to have all the threads*/
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
-        List<Future<Data>> threadReturns = new ArrayList<>();
-        
+        /** */
+        final ExecutorCompletionService<Data> complete = 
+                                                new ExecutorCompletionService<Data>(pool);
         int startState;
         if(args.length < 2){
             Random ran = new Random();
@@ -57,16 +66,34 @@ public class Machine{
         }else{
             startState = Integer.parseInt(args[1]);
         }
+        
+        try{
+            queue.put(data);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
 
-        //Start all the threads 
         for(int i = 0; i < threads; i++){
-            final Future<Data> threadReturn =
-                                     pool.submit(new Markov(startState, iterations, data));    
-            threadReturns.add(threadReturn);            
+            complete.submit(new Markov(startState, iterations, queue));
         }//end for
         
-        //check if enough finite state machines have been returned
-        if(threadReturns.size() >= fsm)
-            pool.shutdown();
+        pool.shutdown();
+        int count = 0;
+        for(int i = 0; i < fsm; i++){
+            try{
+                final Future<Data> future = complete.take();
+                final Data curData = future.get();
+                //System.out.println(count);
+                int[] result = curData.getResults();
+                for(int j = 0; j < result.length; j++){
+                    System.out.println("-State " + j + ": " + result[j]);
+                }
+                count++;
+            }catch(ExecutionException e){
+                System.out.println("Error during thread");
+            }catch(InterruptedException e){
+                System.out.println("Interrupted thread");
+            }//end try-catch
+        }
     }//end machine
 }//end Machine class

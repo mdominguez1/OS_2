@@ -1,6 +1,7 @@
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.Callable;
 import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
 /**
  * @Author - Melchor Dominguez
  * @Version - 4.16.2018
@@ -29,10 +30,15 @@ public class Markov implements Callable<Data>{
      * @param stuff - The data that contains a unique ID, the result of the execution, and
      *                the representation of the finite state machine
      */
-    protected Markov(int startState, int iterations, Data stuff){
+    protected Markov(int startState, int iterations, BlockingQueue queue){
         start = startState;
         this.iterations = iterations;
-        data = stuff;
+
+        try{
+            data = (Data)queue.take();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
     }//end constructor
     
     /**
@@ -48,8 +54,9 @@ public class Markov implements Callable<Data>{
             }//end if
             synchronized(data){
                 data.getEnd(start, iterations);
+                System.out.println("Return");
                 return data;
-            }
+            }//end synchronize
         }//end while
         return null;
     }//end run()

@@ -160,6 +160,10 @@ public class Data{
         return uniqueID;
     }//end getID()
     
+    protected int[] getResults(){
+        return results;
+    }//end getResults()
+      
     /** 
      * Method to go through the finite state machine and 
      * store the result in the data.
@@ -169,6 +173,7 @@ public class Data{
      *                      go to a new state
      */
     protected void getEnd(int startState, int iterations){
+        Arrays.fill(results, 0);
         int curState = startState;
         float prob;
         for(int curIt = 0; curIt < iterations; curIt++){
