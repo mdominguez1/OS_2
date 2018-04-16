@@ -172,11 +172,16 @@ public class Data{
     
     /**
      * get the unique ID 
+     * @return uniqueID - Unique IDs for each thread.
      */
     protected int getID(){
         return uniqueID;
     }//end getID()
-    
+
+    /**
+    * Gets the results of the finite state machine.
+    * @return results - Results of finite state machine.
+    */
     protected int[] getResults(){
         return results;
     }//end getResults()

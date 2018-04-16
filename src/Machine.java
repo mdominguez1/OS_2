@@ -21,7 +21,7 @@ import java.util.InputMismatchException;
 public class Machine{
 
     /**
-     * Main functon that starts and collects results from all thread
+     * Main function that takes in specifications for finite state machine.
      */
     public static void main(String[] args){
 
@@ -75,7 +75,17 @@ public class Machine{
         finalize(data, fsm, complete);
 
         }//end main
-        
+
+
+        /**Creates threadpool and executor. Runs threads through Markov using the executor.
+        * @param threads - Number of threads.
+        * @param data - Data for finite state machines.
+        * @param file - File to read probablities from.
+        * @param iterations - Number of iterations.
+        * @param fsm - Number of finite state machines.
+        * @param args - Arguments
+        * @return complete - ExecutorCompletionService
+        */
         private static ExecutorCompletionService<Data> poolParty(int threads, Data data, File file, int iterations, int fsm, String[] args){
             /** Threadpool to have all the threads*/
             final ExecutorService pool = Executors.newFixedThreadPool(threads);
@@ -98,6 +108,12 @@ public class Machine{
         return complete;
         }
 
+
+        /** Finalizes the results of Machine and prints them out.
+        * @param data - Data for finite state machines.
+        * @param fsm - Number of finite state machines.
+        * @param complete - Complete Service that executes threads from pool.
+        */
         private static void finalize(Data data, int fsm, ExecutorCompletionService<Data> complete){
             float[] finalResults = new float[data.getSize()];
             float total = 0;
