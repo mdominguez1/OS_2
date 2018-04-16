@@ -30,15 +30,10 @@ public class Markov implements Callable<Data>{
      * @param stuff - The data that contains a unique ID, the result of the execution, and
      *                the representation of the finite state machine
      */
-    protected Markov(int startState, int iterations, BlockingQueue queue){
+    protected Markov(int startState, int iterations, Data data){
         start = startState;
         this.iterations = iterations;
-
-        try{
-            data = (Data)queue.take();
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
+        this.data = data;
     }//end constructor
     
     /**

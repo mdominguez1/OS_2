@@ -53,7 +53,7 @@ public class Machine{
 
         //Create a queue with capacity 1. Threads wanting to add an item are blocked 
         //until the current item is consumed.
-        BlockingQueue<Data> queue = new ArrayBlockingQueue<Data>(1);
+        //BlockingQueue<Data> queue = new ArrayBlockingQueue<Data>(1);
         /** Threadpool to have all the threads*/
         final ExecutorService pool = Executors.newFixedThreadPool(threads);
         /** */
@@ -67,18 +67,21 @@ public class Machine{
             startState = Integer.parseInt(args[1]);
         }
         
-        try{
-            queue.put(data);
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
+        //try{
+        //    queue.put(data);
+       // }catch(InterruptedException e){
+        //    e.printStackTrace();
+        //}
 
-        for(int i = 0; i < threads; i++){
-            complete.submit(new Markov(startState, iterations, queue));
+        for(int i = 0; i < fsm; i++){
+            data = new Data(file);
+            complete.submit(new Markov(startState, iterations, data));
         }//end for
         
         pool.shutdown();
-        int count = 0;
+        float[] finalResults = new float[data.getSize()];
+        float total = 0;
+
         for(int i = 0; i < fsm; i++){
             try{
                 final Future<Data> future = complete.take();
@@ -86,14 +89,20 @@ public class Machine{
                 //System.out.println(count);
                 int[] result = curData.getResults();
                 for(int j = 0; j < result.length; j++){
-                    System.out.println("-State " + j + ": " + result[j]);
+                    //System.out.println("-State " + j + ": " + result[j]);
+                    finalResults[j] += result[j];
+                    total+= result[j];
                 }
-                count++;
             }catch(ExecutionException e){
                 System.out.println("Error during thread");
             }catch(InterruptedException e){
                 System.out.println("Interrupted thread");
             }//end try-catch
-        }
+        }//end for
+        
+        for(int i = 0; i < finalResults.length; i++){
+            System.out.println("-State " + i + ": " + finalResults[i]/total);
+        }//for 
+
     }//end machine
 }//end Machine class
